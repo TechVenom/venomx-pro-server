@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VenomX Pro — Streaming Control Center</title>
+    <link rel="stylesheet" href="style.css?v=3">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+
+    <div class="dashboard">
+        <!-- TOP BAR -->
+        <header class="top-bar">
+            <div class="brand">
+                <div class="brand-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div>
+                    <h1>Venom<span class="accent">X</span> <span class="pro-tag">PRO</span></h1>
+                    <p class="brand-sub">Streaming Control Center</p>
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <div class="status-pill" id="server-status">
+                    <span class="status-dot online"></span>
+                    <span id="uptime">00:00:00</span>
+                </div>
+                <div class="status-pill">
+                    <i class="fas fa-users"></i>
+                    <span id="viewers">0</span>
+                </div>
+                <div class="status-pill">
+                    <i class="fas fa-microchip"></i>
+                    <span id="cpu-usage">0%</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- STATS ROW -->
+        <div class="stats-row">
+            <div class="stat-card glow-border">
+                <div class="stat-icon"><i class="fas fa-broadcast-tower"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="active-streams-count">0</span>
+                    <span class="stat-label">Active Streams</span>
+                </div>
+            </div>
+            <div class="stat-card glow-border">
+                <div class="stat-icon ip-icon"><i class="fas fa-network-wired"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="server-ip" style="font-size:1.1rem;">---</span>
+                    <span class="stat-label">Server IP</span>
+                </div>
+            </div>
+            <div class="stat-card glow-border">
+                <div class="stat-icon clients-icon"><i class="fas fa-mobile-alt"></i></div>
+                <div class="stat-info">
+                    <span class="stat-number" id="active-clients">0</span>
+                    <span class="stat-label">Connected Clients</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIVE CONSOLE -->
+        <section class="console-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-terminal"></i>
+                    <span>Live Event Console</span>
+                    <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+                </div>
+                <div class="console-controls">
+                    <button onclick="toggleAutoScroll()" id="autoscroll-btn" class="console-btn active" title="Auto-scroll">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button onclick="clearLogs()" class="console-btn" title="Clear">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="console-body" id="log-content">
+                <div class="log-entry log-system">
+                    <span class="log-time">[--:--:--]</span>
+                    <span class="log-badge badge-sys">SYS</span>
+                    <span class="log-msg">VenomX Pro Engine initialized. Awaiting connections...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- STREAM PREVIEW -->
+        <section class="streams-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-play-circle"></i>
+                    <span>Stream Discovery</span>
+                </div>
+            </div>
+            <div id="streams-list" class="streams-grid">
+                <div class="empty-state">
+                    <div class="empty-spinner"></div>
+                    <p>Waiting for OBS stream...</p>
+                    <p class="empty-sub">Publish to: <code>rtmp://[IP]:1935/live/stream</code></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- OBS SETUP -->
+        <section class="setup-section">
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-cog"></i>
+                    <span>OBS Configuration</span>
+                </div>
+            </div>
+            <div class="setup-grid">
+                <div class="setup-card">
+                    <div class="setup-label"><i class="fas fa-server"></i> RTMP Server</div>
+                    <div class="setup-value">
+                        <code id="rtmp-url">rtmp://[IP]:1935/live</code>
+                        <button class="copy-btn" onclick="copy('rtmp-url')"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
+                <div class="setup-card">
+                    <div class="setup-label"><i class="fas fa-key"></i> Stream Key</div>
+                    <div class="setup-value">
+                        <code id="stream-key">stream</code>
+                        <button class="copy-btn" onclick="copy('stream-key')"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
+                <div class="setup-card full-width">
+                    <div class="setup-label"><i class="fas fa-satellite-dish"></i> SRT (Ultra-Low Latency)</div>
+                    <div class="setup-value">
+                        <code id="srt-url">srt://[IP]:8890?streamid=publish:stream</code>
+                        <button class="copy-btn" onclick="copy('srt-url')"><i class="fas fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>VenomX Pro v2.5 — Streaming Control Center &copy; 2026</p>
+        </footer>
+    </div>
+
+    <script src="config.js?v=3"></script>
+    <script src="script.js?v=3"></script>
+</body>
+</html>

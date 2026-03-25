@@ -1,0 +1,15 @@
+# System files
+.DS_Store
+Thumbs.db
+*.log
+
+# Docker
+.docker/
+
+# Development
+node_modules/
+.vscode/
+.idea/
+
+# Project specific
+dashboard/config.js

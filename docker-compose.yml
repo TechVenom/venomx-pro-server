@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: venomx-streaming-engine
+    restart: unless-stopped
+    # network_mode: host (Removed for Windows compatibility)
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml:ro
+    ports:
+      - "1935:1935" # RTMP
+      - "8888:8888" # HLS
+      - "8889:8889" # WebRTC (Signaling)
+      - "8189:8189/udp" # WebRTC (ICE)
+      - "8890:8890/udp" # SRT (UDP)
+      - "9997:9997" # API
+      - "9998:9998" # Metrics
+    environment:
+      - MTX_LOGLEVEL=info
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:9997/v3/config/get"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  dashboard:
+    image: nginx:alpine
+    container_name: venomx-dashboard
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./dashboard:/usr/share/nginx/html:ro
+    depends_on:
+      - mediamtx

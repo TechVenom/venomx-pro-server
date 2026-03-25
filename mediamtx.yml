@@ -1,0 +1,27 @@
+api: yes
+apiAddress: :9997
+apiAllowOrigins: ["*"]
+
+# Protocols
+rtmp: yes
+hls: yes
+webrtc: yes
+webrtcAddress: :8889
+webrtcAdditionalHosts: []
+webrtcIPsFromInterfaces: yes
+webrtcAllowOrigins: ["*"]
+srt: yes
+rtsp: yes
+
+# Grant permissions to the "any" user to allow unrestricted LAN streaming
+authInternalUsers:
+  - user: any
+    permissions:
+      - action: api
+      - action: metrics
+      - action: publish
+      - action: read
+
+paths:
+  all:
+    source: publisher
