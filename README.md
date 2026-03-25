@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/TechVenom/venomx-pro-server/main/dashboard/assets/logo-paps.png" width="120" alt="VenomX PAPS Logo" />
+  <img src="dashboard/assets/logo-paps.png" width="120" alt="VenomX PAPS Logo" />
   <h1>🚀 VenomX PAPS</h1>
   <p><strong>Professional Advanced Pro Streaming (PAPS) — High-Performance local backend.</strong></p>
   
