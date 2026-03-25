@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/TechVenom/venomx-pro-server/main/dashboard/favicon.ico" width="80" height="80" alt="VenomX Logo" />
+  <img src="dashboard/assets/logo.webp" width="100" alt="VenomX Pro Logo" />
   <h1>🚀 VenomX Pro</h1>
   <p><strong>The ultimate local streaming backend for professional creators.</strong></p>
   
