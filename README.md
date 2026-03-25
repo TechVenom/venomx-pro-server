@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="dashboard/assets/logo.webp" width="100" alt="VenomX Pro Logo" />
-  <h1>🚀 VenomX Pro</h1>
-  <p><strong>The ultimate local streaming backend for professional creators.</strong></p>
+  <img src="https://raw.githubusercontent.com/TechVenom/venomx-pro-server/main/dashboard/assets/logo-paps.png" width="120" alt="VenomX PAPS Logo" />
+  <h1>🚀 VenomX PAPS</h1>
+  <p><strong>Professional Advanced Pro Streaming (PAPS) — High-Performance local backend.</strong></p>
   
   [![GitHub License](https://img.shields.io/github/license/TechVenom/venomx-pro-server?style=flat-square&color=blue)](LICENSE)
   [![Docker](https://img.shields.io/badge/docker-running-blue.svg?style=flat-square&logo=docker)](https://www.docker.com/)
