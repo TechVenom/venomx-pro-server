@@ -17,11 +17,23 @@ docker-compose up -d
 echo 📊 Checking Server Status...
 timeout /t 5 /nobreak >nul
 
-:: Robust IP detection for Windows
+:: Robust IP detection for Windows (Prefer Wi-Fi over Ethernet)
 set "SERVER_IP=127.0.0.1"
-for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4 Address" ^| findstr /r "192.168. 10. 172."') do (
-    set "SERVER_IP=%%a"
-    goto :IP_FOUND
+
+:: Try Wi-Fi first
+for /f "usebackq tokens=*" %%i in (`powershell -NoProfile -Command "(Get-NetAdapter | Where-Object { $_.Status -eq 'Up' -and ($_.Name -match 'Wi-Fi' -or $_.Name -match 'Wireless') } | Get-NetIPAddress -AddressFamily IPv4 | Select-Object -First 1).IPAddress" 2^>nul`) do set "SERVER_IP=%%i"
+
+:: Fallback to Ethernet if no Wi-Fi found
+if "%SERVER_IP%"=="127.0.0.1" (
+    for /f "usebackq tokens=*" %%i in (`powershell -NoProfile -Command "(Get-NetAdapter | Where-Object { $_.Status -eq 'Up' -and $_.Name -match 'Ethernet' } | Get-NetIPAddress -AddressFamily IPv4 | Select-Object -First 1).IPAddress" 2^>nul`) do set "SERVER_IP=%%i"
+)
+
+:: Final fallback to the old method if still 127.0.0.1
+if "%SERVER_IP%"=="127.0.0.1" (
+    for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4 Address" ^| findstr /r "192.168. 10. 172."') do (
+        set "SERVER_IP=%%a"
+        goto :IP_FOUND
+    )
 )
 :IP_FOUND
 set "SERVER_IP=%SERVER_IP: =%"

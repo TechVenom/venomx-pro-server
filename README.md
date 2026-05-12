@@ -48,7 +48,10 @@ VenomX Pro orchestrates two core services in a seamless Docker environment:
     *   Clone this repository or download the ZIP.
     *   Double-click `run_venomx_pro.bat`.
 
-3.  **Monitor**:
+3.  **Stop**:
+    *   To safely terminate the server and all background processes, double-click `stop_venomx_pro.bat`.
+
+4.  **Monitor**:
     *   The script will automatically detect your local IP and open the **VenomX Pro Dashboard** in your browser at `http://[YOUR-IP]:8080`.
 
 ---
